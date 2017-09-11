@@ -1,0 +1,5 @@
+<% if logged_in? %>
+  <%= render 'static_pages/post' %>
+<% else %>
+  <%= render 'static_pages/sign_up' %>
+<% end %>
