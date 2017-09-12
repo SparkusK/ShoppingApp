@@ -86,6 +86,13 @@ p {
 aside {
   section.user_info {
     margin-top: 20px;
+    h1 {
+      text-align: right;
+    }
+  }
+  section.user_info_home {
+    margin-top: 20px;
+    text-align: left;
   }
   section {
     padding: 10px 0;
