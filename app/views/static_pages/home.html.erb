@@ -1,5 +1,9 @@
 <% if logged_in? %>
-  <%= render 'static_pages/post' %>
+  <% if belongs_to_household? %>
+    <%= render 'households/summary' %>
+  <% else %>
+    <%= render 'households/get_a_household' %>
+  <% end %>
 <% else %>
   <%= render 'static_pages/sign_up' %>
 <% end %>

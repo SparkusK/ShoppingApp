@@ -11,7 +11,13 @@
     </div>
   <% end %>
 
+  <%= form.label :name %>
+  <%= form.text_field :name, class: 'form-control' %>
+
+  <%= form.label "Head of the household (Needs ui improvement)" %>
+  <%= form.text_field :user_id, class: 'form-control' %>
+
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit "Create Household", class: "btn btn-primary" %>
   </div>
 <% end %>

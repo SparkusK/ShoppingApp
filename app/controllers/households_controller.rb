@@ -15,6 +15,8 @@ class HouseholdsController < ApplicationController
   # GET /households/new
   def new
     @household = Household.new
+    @household.name = current_user.surname + " Household"
+    @household.user_id = current_user.id
   end
 
   # GET /households/1/edit
@@ -25,9 +27,9 @@ class HouseholdsController < ApplicationController
   # POST /households.json
   def create
     @household = Household.new(household_params)
-
     respond_to do |format|
       if @household.save
+        current_user.update_attributes(:household_id => @household.id)
         format.html { redirect_to @household, notice: 'Household was successfully created.' }
         format.json { render :show, status: :created, location: @household }
       else
