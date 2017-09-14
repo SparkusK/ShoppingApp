@@ -49,6 +49,7 @@ end
 
 group :production do
   gem 'pg', '>=0.18.4'
+  gem 'sendgrid-ruby'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
