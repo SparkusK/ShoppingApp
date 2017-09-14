@@ -3,8 +3,14 @@
   <aside class="col-md-8">
     <section class="household_info">
       <h1> Household Details </h1>
-      If no household, display large "It appears you do not belong to a household yet.
-      /link/button Set up one here /link/button."
+      <% if @user.household_id.nil? %>
+
+      <% else %>
+        <p> display the user's household details as a summary. </p>
+        <p> you are part of the <%= Households.find_by(id: @user.household_id).name %> household: </p>
+        <p> Members: </p>
+        <p> Recent shopping lists: </p>
+      <% end %>
     </section>
 
   </aside>

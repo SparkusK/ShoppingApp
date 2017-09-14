@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170719010647) do
+ActiveRecord::Schema.define(version: 20170912134032) do
+
+  create_table "households", force: :cascade do |t|
+    t.string "name"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_households_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
@@ -25,7 +33,9 @@ ActiveRecord::Schema.define(version: 20170719010647) do
     t.datetime "activated_at"
     t.string "reset_digest"
     t.datetime "reset_sent_at"
+    t.integer "household_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["household_id"], name: "index_users_on_household_id"
   end
 
 end
