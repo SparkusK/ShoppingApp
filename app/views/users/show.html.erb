@@ -1,19 +1,6 @@
 <% provide(:title, @user.firstname) %>
 <div class="row">
-  <aside class="col-md-8">
-    <section class="household_info">
-      <h1> Household Details </h1>
-      <% if @user.household_id.nil? %>
 
-      <% else %>
-        <p> display the user's household details as a summary. </p>
-        <p> you are part of the <%= Households.find_by(id: @user.household_id).name %> household: </p>
-        <p> Members: </p>
-        <p> Recent shopping lists: </p>
-      <% end %>
-    </section>
-
-  </aside>
   <aside class="col-md-2">
     <section class="user_info">
       <h1>
