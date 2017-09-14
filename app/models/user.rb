@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   attr_accessor :remember_token, :activation_token, :reset_token
-  belongs_to :household
+  belongs_to :household, optional: true
 
   before_save :downcase_email
   before_create :create_activation_digest
