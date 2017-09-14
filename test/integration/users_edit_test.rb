@@ -12,14 +12,15 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_template 'users/edit'
     patch user_path(@user), params: {
       user: {
-        name: "", # empty
+        firstname: "", # empty
+        surname: "", # empty
         email: "foo@invalid", # needs *.com
         password: "foo", # too short
         password_confirmation: "bar" #too short, doesn't match
       }
     }
     assert_template 'users/edit'
-    assert_select "div.alert", "The form contains 4 errors."
+    assert_select "div.alert", "The form contains 5 errors."
   end
 
   test "successful edit" do
@@ -30,7 +31,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     email = "valid@email.com"
     patch user_path(@user), params: {
       user: {
-        name: name,
+        firstname: name,
         email: email,
         password: "validp",
         password_confirmation: "validp"
@@ -39,7 +40,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_not flash.empty?
     assert_redirected_to @user
     @user.reload
-    assert_equal name, @user.name
+    assert_equal name, @user.firstname
     assert_equal email, @user.email
   end
 
@@ -51,7 +52,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     email = "foo@bar.com"
     patch user_path(@user), params: {
       user: {
-        name: name,
+        firstname: name,
         email: email,
         password: "",
         password_confirmation: ""
@@ -60,7 +61,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_not flash.empty?
     assert_redirected_to @user
     @user.reload
-    assert_equal name, @user.name
+    assert_equal name, @user.firstname
     assert_equal email, @user.email
   end
 
@@ -69,6 +70,6 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     log_in_as(@user)
     assert_redirected_to edit_user_url(@user)
     assert session[:forwarding_url].nil?
-    
+
   end
 end

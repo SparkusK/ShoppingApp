@@ -18,7 +18,7 @@ class HouseholdsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create household" do
-    @new_household = Household.new(name: @head.name, user_id: @head.id)
+    @new_household = Household.new(name: @head.surname + " Household", user_id: @head.id)
     assert_difference('Household.count') do
       post households_url, params: { household: { name: @new_household.name, user_id:  @new_household.user_id } }
     end
