@@ -1,9 +1,11 @@
 require 'test_helper'
 
+
 class HouseholdsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @household = households(:one)
     @head = users(:herp)
+
   end
 
   test "should get index" do
@@ -12,13 +14,27 @@ class HouseholdsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should redirect get new to root if not logged in" do
+    get new_household_url
+    assert_redirected_to root_url
+  end
+
+  test "should not create household if not logged in" do
+    @new_household = Household.new(name: @head.surname + " Household", user_id: @head.id)
+    assert_no_difference('Household.count') do
+      post households_url, params: { household: { name: @new_household.name, user_id:  @new_household.user_id } }
+    end
+  end
+
   test "should get new" do
+    log_in_as(@head)
     get new_household_url
     assert_response :success
   end
 
   test "should create household" do
-    @new_household = Household.new(name: @head.surname + " Household", user_id: @head.id)
+    log_in_as(@head)
+    @new_household = Household.new(name: current_user.surname + " Household", user_id: current_user.id)
     assert_difference('Household.count') do
       post households_url, params: { household: { name: @new_household.name, user_id:  @new_household.user_id } }
     end
@@ -26,6 +42,8 @@ class HouseholdsControllerTest < ActionDispatch::IntegrationTest
     # * Part of the household, and
     # * the head of the household
   end
+
+
 
   test "should show household" do
     # Need to assert that the user is a part of the household

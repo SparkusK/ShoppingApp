@@ -1,5 +1,6 @@
 class HouseholdsController < ApplicationController
   before_action :set_household, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:create, :new]
 
   # GET /households
   # GET /households.json
@@ -15,7 +16,7 @@ class HouseholdsController < ApplicationController
   # GET /households/new
   def new
     @household = Household.new
-    @household.name = current_user.surname + " Household"
+    @household.name = @user.surname + " Household"
     @household.user_id = current_user.id
   end
 
@@ -29,7 +30,7 @@ class HouseholdsController < ApplicationController
     @household = Household.new(household_params)
     respond_to do |format|
       if @household.save
-        current_user.update_attributes(:household_id => @household.id)
+        @user.update_attributes(:household_id => @household.id)
         format.html { redirect_to @household, notice: 'Household was successfully created.' }
         format.json { render :show, status: :created, location: @household }
       else
@@ -72,5 +73,15 @@ class HouseholdsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def household_params
       params.require(:household).permit(:name, :user_id)
+    end
+
+    def set_user
+      if logged_in? && current_user?(current_user)
+        @user = current_user
+      else
+        @user = nil
+        redirect_back_or(root_url)
+      end
+
     end
 end
