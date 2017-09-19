@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170919214656) do
+ActiveRecord::Schema.define(version: 20170919224702) do
 
   create_table "households", force: :cascade do |t|
     t.string "name"
@@ -19,6 +19,15 @@ ActiveRecord::Schema.define(version: 20170919214656) do
     t.datetime "updated_at", null: false
     t.boolean "joinable"
     t.index ["user_id"], name: "index_households_on_user_id"
+  end
+
+  create_table "invitations", id: false, force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "household_id", null: false
+    t.boolean "is_invitation", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "household_id"], name: "index_invitations_on_user_id_and_household_id"
   end
 
   create_table "users", force: :cascade do |t|
