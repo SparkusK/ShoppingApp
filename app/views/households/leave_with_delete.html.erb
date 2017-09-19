@@ -1,0 +1,5 @@
+<p> You are the only user in this household. Leaving the household will delete it. Are you sure you want to delete this household along with all of its data? </p>
+<div class="confirm_leave_delete">
+  <%= link_to "No, don't leave", root_url, class: "btn btn-lg btn-primary" %>
+  <%= link_to "Yes, leave and delete it", leave_with_delete_path(@user.id), class: "btn btn-lg", method: :post %>
+</div>

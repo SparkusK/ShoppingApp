@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
   get '/search_household', to: 'households#search'
+  get '/leave_household/:id', to: 'households#leave', as: :leave_household
+  post 'leave_with_delete/:id', to: 'households#leave_with_delete', as: :leave_with_delete
+  post 'leave_with_transfer/:old/:new', to: 'households#leave_with_transfer', as: :leave_with_transfer
+  post 'leave_member/:id', to: 'households#leave_member', as: :leave_member
   resources :users
   resources :account_activations, only: [:edit]
   resources :password_resets, only: [:new, :create, :edit, :update]

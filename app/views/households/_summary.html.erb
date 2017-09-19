@@ -1,7 +1,28 @@
 <h1> <%= current_user.household.name %> </h1>
 <h2> Head: </h2>
+<% @head = current_user.household.user %>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <%= gravatar_for @head, size: 35 %>
+    <%= @head.firstname + " " + @head.surname %>
+  </div>
+  <div class="panel-footer">
+    <button type="button" class="btn">Do nothing!</button>
+  </div>
+</div>
 </br>
 <h2> Members: </h2>
+<% User.where(household_id: current_user.household.id).find_each do |member| %>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <%= gravatar_for member, size: 35 %>
+    <%= member.firstname + " " + member.surname %>
+  </div>
+  <div class="panel-footer">
+    <button type="button" class="btn">Do nothing!</button>
+  </div>
+</div>
+<% end %>
 </br>
 <h2> Shopping lists: </h2>
 <p> To be implemented. <p>

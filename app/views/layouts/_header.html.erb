@@ -19,6 +19,19 @@
                 </li>
               </ul>
             </li>
+            <% if belongs_to_household? %>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  Household Options <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li> <%= link_to "Leave Household", leave_household_url(current_user.id), :data => {:confirm => 'Are you sure you want to leave the household?'} %> </li>
+                </ul>
+              </li>
+              <% if current_user.id == current_user.household.user %>
+
+              <% end %>
+            <% end %>
         <% else %>
           <li><%= link_to "Log in", login_path %></li>
         <% end %>
