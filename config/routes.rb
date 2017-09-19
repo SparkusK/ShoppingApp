@@ -8,14 +8,22 @@ Rails.application.routes.draw do
   get '/contact', to: 'static_pages#contact'
   get '/signup', to: 'users#new'
   post '/signup', to: 'users#create'
+
+  # -- Sessions -- #
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
+
+  # -- Households -- #
   get '/search_household', to: 'households#search'
   get '/leave_household/:id', to: 'households#leave', as: :leave_household
   post 'leave_with_delete/:id', to: 'households#leave_with_delete', as: :leave_with_delete
   post 'leave_with_transfer/:old/:new', to: 'households#leave_with_transfer', as: :leave_with_transfer
   post 'leave_member/:id', to: 'households#leave_member', as: :leave_member
+  post 'kick_member/:member_id', to: 'households#kick_member', as: :kick_member
+  post 'close_household', to: 'households#close', as: :close_household
+  post 'open_household', to: 'households#open', as: :open_household
+
   resources :users
   resources :account_activations, only: [:edit]
   resources :password_resets, only: [:new, :create, :edit, :update]

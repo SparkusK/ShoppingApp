@@ -1,4 +1,7 @@
+<%# Page title: %>
 <h1> <%= current_user.household.name %> </h1>
+
+<%# Head: %>
 <h2> Head: </h2>
 <% @head = current_user.household.user %>
 <div class="panel panel-default">
@@ -11,19 +14,65 @@
   </div>
 </div>
 </br>
-<h2> Members: </h2>
-<% User.where(household_id: current_user.household.id).find_each do |member| %>
-<div class="panel panel-default">
-  <div class="panel-body">
-    <%= gravatar_for member, size: 35 %>
-    <%= member.firstname + " " + member.surname %>
-  </div>
-  <div class="panel-footer">
-    <button type="button" class="btn">Do nothing!</button>
-  </div>
-</div>
+
+<%# Members: %>
+<% if @head.household.users.count > 1 %>
+  <h2> Members: </h2>
+  <% User.where(household_id: current_user.household.id).find_each do |member| %>
+    <% if member.id != @head.id %>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <%= gravatar_for member, size: 35 %>
+          <%= member.firstname + " " + member.surname %>
+        </div>
+        <%# If the user viewing the page is the head of the household: %>
+        <% if current_user.id == current_user.household.user_id %>
+        <div class="panel-footer">
+          <%= link_to "Kick Member", kick_member_path(member.id), method: :post, data: {confirm: "Are you sure?"} %>
+        </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
 <% end %>
 </br>
+
+<%# Shopping Lists: %>
 <h2> Shopping lists: </h2>
 <p> To be implemented. <p>
+
+<%# Head Admin stuff: %>
+<% if current_user.id == @head.id %>
+  <h2> Household Head administrative functions </h2>
+  <div class="panel-group">
+
+    <h3> Can other users apply to become members? </h3>
+    <div class="panel panel-default">
+      <div class="panel-body">
+      <% if @head.household.joinable? %>
+        <%= link_to "Close Household", close_household_path, class: "btn btn-primary" %>
+      <% else %>
+        <%= link_to "Open Housheold", open_household_path, class: "btn btn-primary" %>
+      <% end %>
+      </div>
+    </div>
+
+    <h3> Pending Membership Applications: </h3>
+    <div class="panel panel-default">
+      <div class="panel-body">
+      </div>
+      <div class="panel-footer">
+      </div>
+    </div>
+
+    <h3> Pending Membership Invitations: </h3>
+    <div class="panel panel-default">
+      <div class="panel-body">
+      </div>
+      <div class="panel-footer">
+      </div>
+    </div>
+
+  </div>
+<% end %>
 </br>

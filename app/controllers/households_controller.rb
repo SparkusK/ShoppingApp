@@ -1,12 +1,18 @@
 class HouseholdsController < ApplicationController
   before_action :set_household, only: [:show, :edit, :update, :destroy]
   before_action :set_user, only: [:create, :new, :leave, :leave_member]
-  before_action :confirm_user_is_head, only: [:leave_with_delete, :leave_with_transfer]
+  before_action :confirm_user_is_head, only:
+     [:leave_with_delete,
+      :leave_with_transfer,
+      :kick_member,
+      :close_household,
+      :open_household]
+  before_action :confirm_member_belongs_to_current_household, only: [:kick_member]
 
   # GET /households
   # GET /households.json
   def index
-    @households = Household.all
+    @households = Household.all.paginate(page: params[:page])
   end
 
   # GET /households/1
@@ -33,6 +39,13 @@ class HouseholdsController < ApplicationController
       format.json {}
     end
   end
+
+  # GET /search?
+  def search
+    @households = Household.where(joinable: true).paginate(page: params[:page])
+    render 'search'
+  end
+
 
   # POST /leave_with_delete/:id
   def leave_with_delete
@@ -67,6 +80,27 @@ class HouseholdsController < ApplicationController
       end
     end
   end
+
+  # POST /kick_member/:id
+  def kick_member
+    # don't kick yourself -- for people trying to be smart
+    if @member.id != current_user.id && @membership
+      respond_to do |format|
+        if @member.update_attributes(household_id: nil)
+          format.html {
+            flash[:success] = "Member successfully removed."
+            redirect_to root_url
+          }
+        else
+          format.html {
+            flash[:error] = "Member couldn't be removed."
+            redirect_to root_url
+          }
+        end
+      end
+    end
+  end
+
 
   # POST /leave_member/:id
   def leave_member
@@ -129,6 +163,38 @@ class HouseholdsController < ApplicationController
     end
   end
 
+  def open_household
+    respond_to do |format|
+      if @household.update_attributes(joinable: true)
+        format.html {
+          flash[:success] = "Other members can now apply to join the household."
+          redirect_to root_url
+        }
+      else
+        format.html {
+          flash[:error] = "Could not open the household for other members to join."
+          redirect_to root_url
+        }
+      end
+    end
+  end
+
+  def close_household
+    respond_to do |format|
+      if @household.update_attributes(joinable: false)
+        format.html {
+          flash[:success] = "Other members can not apply to join the household anymore."
+          redirect_to root_url
+        }
+      else
+        format.html {
+          flash[:error] = "Could not close member applications."
+          redirect_to root_url
+        }
+      end
+    end
+  end
+
   # DELETE /households/1
   # DELETE /households/1.json
   def destroy
@@ -167,5 +233,10 @@ class HouseholdsController < ApplicationController
         @user = nil
         redirect_back_or(root_url)
       end
+    end
+
+    def confirm_member_belongs_to_current_household
+      @member = User.find_by(id: params[:member_id])
+      @membership = @member.household_id == current_user.household_id
     end
 end
