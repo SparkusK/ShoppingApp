@@ -1,0 +1,12 @@
+<h1>Search for members to invite:</h1>
+<%= form_for @invitation do |f| %>
+  <%= f.label "Search a user's first or surname" %>
+  <%= f.text_field :search_query, class: 'form-control' %>
+  <%= f.submit "Do the search again", class: "btn btn-primary" %>
+<% end %>
+
+<hr>
+
+<%= @users.each do |user| %>
+  <%= render 'show_user' %>
+<% end %>

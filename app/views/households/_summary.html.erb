@@ -58,18 +58,27 @@
     </div>
 
     <h3> Pending Membership Applications: </h3>
+    <% Invitation.where("household_id = ? AND is_invitation = ?", params[:household_id], false).find_each do |application| %>
     <div class="panel panel-default">
       <div class="panel-body">
+        <%= gravatar_for application.user, size: 35 %>
+        <%= application.user.firstname + " " + application.user.surname %>
       </div>
       <div class="panel-footer">
+        <%= link_to "Decline Application", decline_application_path(application.user.id, application.household.id), method: :post, data: {confirm: "Are you sure you want to decline this user?"} %>
+        <%= link_to "Accept Application", accept_application_path(application.user.id, application.household.id), method: :post, data: {confirm: "Are you sure you want to accept this user?"} %>
       </div>
     </div>
 
     <h3> Pending Membership Invitations: </h3>
+    <% Invitation.where("household_id = ? AND is_invitation = ?", params[:household_id], true).find_each do |invitation| %>
     <div class="panel panel-default">
       <div class="panel-body">
+        <%= gravatar_for invitation.user, size: 35 %>
+        <%= invitation.user.firstname + " " + invitation.user.surname %>
       </div>
       <div class="panel-footer">
+        <%= link_to "Rescind Invitation", rescind_invitation_path(application.user.id, application.household.id), method: :post, data: {confirm: "Are you sure you want to rescind this invitation?"} %>
       </div>
     </div>
 

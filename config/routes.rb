@@ -28,4 +28,14 @@ Rails.application.routes.draw do
   resources :account_activations, only: [:edit]
   resources :password_resets, only: [:new, :create, :edit, :update]
   resources :households
+
+  # -- Invitations -- #
+  post 'rescind_invitation/:household_id/:user_id', to: 'invitations#rescind', as: :rescind_invitation
+  post 'decline_application/:household_id/:user_id', to: 'invitations#decline', as: :decline_application
+  post 'accept_application/:household_id/:user_id', to: 'invitations#accept', as: :accept_application
+  get 'search_members/:search_query', to: 'invitations#search_members', as: :search_members
+
+  get 'search_households/:search_query', to: 'invitations#search_households', as: :search_households
+  
+
 end
