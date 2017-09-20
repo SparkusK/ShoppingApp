@@ -33,9 +33,11 @@ Rails.application.routes.draw do
   post 'rescind_invitation/:household_id/:user_id', to: 'invitations#rescind', as: :rescind_invitation
   post 'decline_application/:household_id/:user_id', to: 'invitations#decline', as: :decline_application
   post 'accept_application/:household_id/:user_id', to: 'invitations#accept', as: :accept_application
-  get 'search_members/:search_query', to: 'invitations#search_members', as: :search_members
 
+  post 'create_household_application/:user_id/:household_id', to: 'invitations#create_household_application', as: :create_household_application
+  post 'create_household_invitation/:user_id/:household_id', to: 'invitations#create_household_invitation', as: :create_household_invitation
+  get 'search_members/:search_query', to: 'invitations#search_members', as: :search_members
   get 'search_households/:search_query', to: 'invitations#search_households', as: :search_households
-  
+
 
 end

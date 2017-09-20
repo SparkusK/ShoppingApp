@@ -134,9 +134,9 @@ class HouseholdsController < ApplicationController
   # POST /households.json
   def create
     @household = Household.new(household_params)
+    @household.joinable = true
     respond_to do |format|
-      if @household.save
-        @user.update_attributes(:household_id => @household.id)
+      if @household.save && @user.update_attributes(:household_id => @household.id)
         format.html {
           flash[:success] = "Household created, you became a member, and you got assigned as the head."
           redirect_to root_url

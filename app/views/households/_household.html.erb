@@ -1,10 +1,10 @@
 <div class="panel panel-default">
-  <div class="panel-heading">household.name</div>
+  <div class="panel-heading"> <%= household.name %> </div>
   <div class="panel-body">
     <div class="row">
       <div class="col-md-6">
-        Members: <%= household.users.count %>
-        Active since: <%= household.date_created %>
+        Members: <%= household.users.count %> <br />
+        Active since: <%= household.created_at %>
       </div>
       <div class="col-md-6">
         Head:
@@ -15,6 +15,10 @@
     </div>
   </div>
   <div class="panel-footer">
-      <%= link_to "Decline Application", decline_application_path(application.user.id, application.household.id), method: :post, data: {confirm: "Are you sure you want to decline this user?"} %>
+      <%= link_to "Apply",
+        create_household_application_path(current_user.id, household.id),
+        method: :post,
+        class: "btn btn-primary",
+        data: {confirm: "Are you sure you want to apply to this household?"} %>
   </div>
 </div>

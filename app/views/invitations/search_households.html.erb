@@ -1,12 +1,10 @@
 <h1>Search for households to apply for:</h1>
 <%= form_tag(search_households_path, method: "get") do %>
   <%= label_tag "Search a user or household" %>
-  <%= text_field_tag :search_query, class: 'form-control' %>
-  <%= submit_tag "Do the search again", class: "btn btn-primary" %>
+  <%= text_field_tag :search_query %>
+  <%= submit_tag "Search Again", class: "btn btn-primary" %>
 <% end %>
 
 <hr>
 
-<%= @households.each do |household| %>
-  <%= render 'show_household' %>
-<% end %>
+<%= render @households %>
