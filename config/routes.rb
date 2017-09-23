@@ -30,7 +30,8 @@ Rails.application.routes.draw do
   resources :households
 
   # -- Invitations -- #
-  post 'rescind_invitation/:household_id/:user_id', to: 'invitations#rescind', as: :rescind_invitation
+  post 'rescind_invitation/:household_id/:user_id', to: 'invitations#rescind_invitation', as: :rescind_invitation
+  post 'rescind_application/:household_id/:user_id', to: 'invitations#rescind_application', as: :rescind_application
   post 'decline_application/:household_id/:user_id', to: 'invitations#decline', as: :decline_application
   post 'accept_application/:household_id/:user_id', to: 'invitations#accept', as: :accept_application
 

@@ -1,0 +1,4 @@
+<p> Pending applications: </p>
+
+<% @applications = get_applications(current_user) %>
+<%= render partial: "invitations/application", collection: @applications %>

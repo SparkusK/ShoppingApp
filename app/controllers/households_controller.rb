@@ -137,8 +137,19 @@ class HouseholdsController < ApplicationController
     @household.joinable = true
     respond_to do |format|
       if @household.save && @user.update_attributes(:household_id => @household.id)
+        # If the user created a new household and became the head of that household,
+        # we want to clear the database of applications to households from that particular user,
+        # because if the head of one of the households decides to then accept the application from
+        # the user that created the new one, undesired results will happen:
+        # What if the new household has other members in it when the other household decides to accept
+        # the old application? Should the household be deleted? Should ownership be moved?
+        # There are too many variables. Just delete the applications.
+        #
+        # On the other hand, invitations should stay, because the user that created the new household
+        # can control the side-effects as if they're just leaving the household.
+        Invitation.where(user_id: @user.id, is_invitation: false).delete_all
         format.html {
-          flash[:success] = "Household created, you became a member, and you got assigned as the head."
+          flash[:success] = "Household created, you became a member, and you got assigned as the head. All your previous household applications were also automatically rescinded."
           redirect_to root_url
         }
         format.json { render :show, status: :created, location: @household }

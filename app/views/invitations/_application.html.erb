@@ -1,0 +1,9 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <%= application.household.name %> <br />
+    <%= "Applied at: #{application.created_at}" %>
+  </div>
+  <div class="panel-footer">
+    <%= link_to "Rescind Application", rescind_application_path(application.household.id, application.user.id), method: :post, data: {confirm: "Are you sure you want to rescind this application?"} %>
+  </div>
+</div>

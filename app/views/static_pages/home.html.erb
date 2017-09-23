@@ -1,8 +1,14 @@
-<% if logged_in?  %>
-  <% if belongs_to_household? %>
-    <%= render 'households/summary' %>
+<% if logged_in? %>
+  <% if activated?(current_user) %>
+    <% if belongs_to_household? %>
+      <%= render 'households/summary' %>
+    <% else %>
+      <%= render 'households/get_a_household' %>
+      <%= render 'invitations/show_invitations' %>
+      <%= render 'invitations/show_applications' %>
+    <% end %>
   <% else %>
-    <%= render 'households/get_a_household' %>
+    <%= render 'static_pages/please_activate' %>
   <% end %>
 <% else %>
   <%= render 'static_pages/sign_up' %>
