@@ -1,0 +1,16 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <%= invitation.household.name %> <br />
+    <%= "Invited at: #{invitation.created_at}" %>
+  </div>
+  <div class="panel-footer">
+    <%= link_to "Decline Invitation",
+      decline_invitation_path(invitation.household_id, invitation.user_id),
+      method: :post,
+      data: {confirm: "Are you sure you want to decline this invitation?"} %> |
+    <%= link_to "Accept Invitation",
+      accept_invitation_path(invitation.household.id, invitation.user.id),
+      method: :post,
+      data: {confirm: "Are you sure you want to accept this invitation? Doing so will clear all your pending invitations and applications."} %>
+  </div>
+</div>

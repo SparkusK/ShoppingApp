@@ -27,13 +27,15 @@ Rails.application.routes.draw do
   resources :users
   resources :account_activations, only: [:edit]
   resources :password_resets, only: [:new, :create, :edit, :update]
-  resources :households
+  resources :households, only: [:new, :create, :edit, :update]
 
   # -- Invitations -- #
   post 'rescind_invitation/:household_id/:user_id', to: 'invitations#rescind_invitation', as: :rescind_invitation
   post 'rescind_application/:household_id/:user_id', to: 'invitations#rescind_application', as: :rescind_application
-  post 'decline_application/:household_id/:user_id', to: 'invitations#decline', as: :decline_application
-  post 'accept_application/:household_id/:user_id', to: 'invitations#accept', as: :accept_application
+  post 'decline_application/:household_id/:user_id', to: 'invitations#decline_application', as: :decline_application
+  post 'accept_application/:household_id/:user_id', to: 'invitations#accept_application', as: :accept_application
+  post 'decline_invitation/:household_id/:user_id', to: 'invitations#decline_invitation', as: :decline_invitation
+  post 'accept_invitation/:household_id/:user_id', to: 'invitations#accept_invitation', as: :accept_invitation
 
   post 'create_household_application/:user_id/:household_id', to: 'invitations#create_household_application', as: :create_household_application
   post 'create_household_invitation/:user_id/:household_id', to: 'invitations#create_household_invitation', as: :create_household_invitation

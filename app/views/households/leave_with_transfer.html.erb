@@ -1,1 +1,46 @@
 <p> You are the head of <%= @user.household.name %>. By leaving this household, ownership will be transferred to:</p>
+
+<%# We're only on this page because there's more than one member, so we don't need to test for that. %>
+<% if @user.household.users.count > 2 %>
+  <%# We're here because the head needs to make a choice between any of the current members. %>
+  <% other_users = @user.household.users.where("id != ?", @user.id) %>
+  <div class="panel-group">
+  <% other_users.each do |other_user| %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <%= gravatar_for(other_user, size: 28) %>
+        <%= other_user.firstname + " " + other_user.surname %>
+      </div>
+      <div class="panel-body">
+        User since: <%= other_user.activated_at %>
+      </div>
+      <div class="panel-footer">
+        <%= link_to "Transfer ownership to this member",
+          leave_with_transfer_path(@user.id, other_user.id),
+          method: :post,
+          class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+  </div>
+<% elsif @user.household.users.count == 2 %>
+  <%# We're here because there's only one option, and thus no choice to be made. Display a confirmation. %>
+  <%# Get the other user: %>
+  <% other_user = @user.household.users.where("id != ?", @user.id).first %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <%= gravatar_for(other_user, size: 28) %>
+      <%= other_user.firstname + " " + other_user.surname%>
+    </div>
+    <div class="panel-body">
+      User since: <%= other_user.activated_at %>
+    </div>
+  </div>
+
+  <%= link_to "Confirm ownership transfer",
+    leave_with_transfer_path(@user.id, other_user.id),
+    method: :post,
+    class: "btn btn-primary" %>
+<% else %>
+  <%# Nonetheless, we'll include the case here, for if things really went bad. %>
+<% end %>

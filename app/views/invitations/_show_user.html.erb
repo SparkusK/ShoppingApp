@@ -1,0 +1,13 @@
+<div class="panel panel-default">
+  <div class="panel-heading"><%= gravatar_for user, size: 28 %> <%= user.firstname + " " + user.surname %></div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-6">
+        Active since: <%= user.activated_at %>
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer">
+      <%= link_to "Invite", create_household_invitation_path(user.id, current_user.household.id), method: :post, data: {confirm: "Are you sure you want to invite this user?"} %>
+  </div>
+</div>

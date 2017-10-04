@@ -20,7 +20,7 @@ class HouseholdsController < ApplicationController
   def show
   end
 
-  # GET /leave_household.<user.id>
+  # GET /leave_household/<user.id>
   def leave
     respond_to do |format|
       format.html {
@@ -33,6 +33,13 @@ class HouseholdsController < ApplicationController
             render 'leave_with_transfer'
           else
             # Just remove the member.
+            if @user.update_attributes(household_id: nil)
+                flash[:success] = "Household left."
+                redirect_to root_url
+            else
+                flash[:error] = "Household wasn't left."
+                redirect_back_or(root_url)
+            end
           end
         end
       }
@@ -50,14 +57,18 @@ class HouseholdsController < ApplicationController
   # POST /leave_with_delete/:id
   def leave_with_delete
     respond_to do |format|
-      if @user.household.destroy! && @user.update_attributes(household_id: nil)
+      # Note that we also destroy all pending applications and invitations to that household, since bads will happen
+      # if, eg, another household gets created with a previously-deleted household's ID - in this case, the new household
+      # will inherit all of the old household's invitations and applications, which might be accepted, meaning that
+      # a user completely unrelated to that household suddenly becomes part of it.
+      if Invitation.where(household_id: @user.household.id).delete_all && @user.household.destroy! && @user.update_attributes(household_id: nil)
         format.html {
-          flash[:success] = "Household left and deleted."
+          flash[:success] = "Household left and deleted, pending invitations and applications also destroyed."
           redirect_to root_url
         }
       else
         format.html {
-          flash[:error] = "Household wasn't deleted or left."
+          flash[:error] = "Household wasn't deleted or left, previous invitations and applications weren't destroyed."
           render 'leave_with_delete'
         }
       end
@@ -101,7 +112,6 @@ class HouseholdsController < ApplicationController
     end
   end
 
-
   # POST /leave_member/:id
   def leave_member
     respond_to do |format|
@@ -134,6 +144,7 @@ class HouseholdsController < ApplicationController
   # POST /households.json
   def create
     @household = Household.new(household_params)
+    @household.user_id = current_user.id
     @household.joinable = true
     respond_to do |format|
       if @household.save && @user.update_attributes(:household_id => @household.id)
@@ -224,7 +235,7 @@ class HouseholdsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def household_params
-      params.require(:household).permit(:name, :user_id)
+      params.require(:household).permit(:name)
     end
 
     def set_user
