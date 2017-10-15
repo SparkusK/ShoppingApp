@@ -21,6 +21,9 @@ gem 'bootstrap-will_paginate', '>=1.0.0'
 gem 'carrierwave',    '>=1.1.0'
 gem 'mini_magick',    '>=4.7.0'
 
+#gem 'ruby-oci8'
+#gem 'activerecord-oracle_enhanced-adapter', '~> 1.8.0'
+
 # Fog is used (I think) for downloading/uploading images to a cloud solution (I used Google cloud services). No images yet,
 # so comment it out:
 # gem 'fog',            '>=1.40.0'

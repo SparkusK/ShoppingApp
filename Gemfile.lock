@@ -33,6 +33,10 @@ GEM
       activemodel (= 5.1.4)
       activesupport (= 5.1.4)
       arel (~> 8.0)
+    activerecord-oracle_enhanced-adapter (1.8.2)
+      activerecord (~> 5.1.0)
+      arel (~> 8.0)
+      ruby-plsql (>= 0.6.0)
     activesupport (5.1.4)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
@@ -171,6 +175,7 @@ GEM
     rb-fsevent (0.10.2)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    ruby-plsql (0.6.0)
     ruby-progressbar (1.8.1)
     ruby_dep (1.5.0)
     ruby_http_client (3.2.0)
@@ -232,6 +237,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-oracle_enhanced-adapter (~> 1.8.0)
   bcrypt (>= 3.1.11)
   bootstrap-sass (>= 3.3.7)
   bootstrap-will_paginate (>= 1.0.0)
