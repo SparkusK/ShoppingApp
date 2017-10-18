@@ -19,7 +19,7 @@
                password: password,
                password_confirmation: password,
                activated: true,
-               activated_at: Time.zone.now,
+               activated_at: Time.now,
                household_id: nil)
 end
 
@@ -59,8 +59,8 @@ User.create!(firstname:  "Example",
              password_confirmation: "foobar",
              admin: true,
              activated: true,
-             activated_at: Time.zone.now,
-             household_id: 1)
+             activated_at: Time.now,
+             household_id: nil)
 
 99.times do |n|
   firstname = Faker::Name.first_name
@@ -73,5 +73,5 @@ User.create!(firstname:  "Example",
                password: password,
                password_confirmation: password,
                activated: true,
-               activated_at: Time.zone.now)
+               activated_at: Time.now)
 end
