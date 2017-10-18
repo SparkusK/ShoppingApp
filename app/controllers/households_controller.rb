@@ -61,7 +61,8 @@ class HouseholdsController < ApplicationController
       # if, eg, another household gets created with a previously-deleted household's ID - in this case, the new household
       # will inherit all of the old household's invitations and applications, which might be accepted, meaning that
       # a user completely unrelated to that household suddenly becomes part of it.
-      if Invitation.where(household_id: @user.household.id).delete_all && @user.household.destroy! && @user.update_attributes(household_id: nil)
+      house_id = @user.household.id
+      if (@user.update_attributes(household_id: nil) && Household.find_by(id: house_id).destroy! && Invitation.where(household_id: house_id).delete_all)
         format.html {
           flash[:success] = "Household left and deleted, pending invitations and applications also destroyed."
           redirect_to root_url
@@ -187,7 +188,7 @@ class HouseholdsController < ApplicationController
 
   def open_household
     respond_to do |format|
-      if @household.update_attributes(joinable: true)
+      if Household.find_by(id: params[:household_id]).update_attributes(joinable: true)
         format.html {
           flash[:success] = "Other members can now apply to join the household."
           redirect_to root_url
@@ -203,7 +204,7 @@ class HouseholdsController < ApplicationController
 
   def close_household
     respond_to do |format|
-      if @household.update_attributes(joinable: false)
+      if Household.find_by(id: params[:household_id]).update_attributes(joinable: false)
         format.html {
           flash[:success] = "Other members can not apply to join the household anymore."
           redirect_to root_url

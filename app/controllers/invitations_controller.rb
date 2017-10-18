@@ -120,7 +120,7 @@ class InvitationsController < ApplicationController
   # Decline a user's application into a household, by simply deleting that particular application.
   def decline_application
     respond_to do |format|
-      if Invitation.where(user_id: params[:user_id], household_id: params[:housheold_id]).delete_all
+      if Invitation.where(user_id: params[:user_id], household_id: params[:household_id]).delete_all
         format.html {
           flash[:success] = "You successfully declined that user's application."
           redirect_back_or(root_url)

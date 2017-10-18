@@ -52,9 +52,9 @@
     <div class="panel panel-default">
       <div class="panel-body">
       <% if @head.household.joinable? %>
-        <%= link_to "Close Household", close_household_path, class: "btn btn-primary" %>
+        <%= link_to "Close Household", close_household_path(@current_user.household.id), class: "btn btn-primary", method: :post %>
       <% else %>
-        <%= link_to "Open Housheold", open_household_path, class: "btn btn-primary" %>
+        <%= link_to "Open Housheold", open_household_path(@current_user.household.id), class: "btn btn-primary", method: :post %>
       <% end %>
       </div>
     </div>
