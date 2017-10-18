@@ -20,7 +20,7 @@ test:
 
 production:
   <<: *default
-  database: 41.193.208.39/XE
+  database: 41.193.208.39:1521/XE
 #  port: 1521
   username: railsprod
   password: password_railsprod
