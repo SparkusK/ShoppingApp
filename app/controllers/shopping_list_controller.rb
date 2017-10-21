@@ -35,8 +35,12 @@ class ShoppingListController < ApplicationController
     end
   end
 
-  def delete_item(item_id)
-    Item.where(_id: item_id).delete!
+  def remove_items
+    @shoppinglist = ShoppingList.find_by(household_id: current_user.household.id)
+    items = params["items"].map{ |item| YAML.load(item) }
+    items.each{ |item| @shoppinglist.remove_item(item)}
+    flash[:success] = "Successfully removed the items"
+    redirect_to root_path
   end
 
   def add_items

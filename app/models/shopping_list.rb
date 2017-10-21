@@ -9,6 +9,7 @@ class ShoppingList
   end
 
   def remove_item(item)
+    self.items.find_by(_id: item).delete
   end
 
 end
