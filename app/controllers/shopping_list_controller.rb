@@ -6,7 +6,7 @@ class ShoppingListController < ApplicationController
       # Use string interpolation to inject the search parameter into the PNP site search url,
       # open-uri to download the page (at the url),
       # and Nokogiri to parse the downloaded page into a Nokogiri object/document
-      nokodoc = Nokogiri::HTML(open("https://www.pnp.co.za/pnpstorefront/pnp/en/search/?pageSize=36&sort=relevance&q=#{search_query.split.join('+')}%3Arelevance&show=Page#"))
+      nokodoc = Nokogiri::HTML(open("https://www.pnp.co.za/pnpstorefront/pnp/en/search/?pageSize=36&sort=relevance&q=#{params[:query].split.join('+')}%3Arelevance&show=Page#"))
       # Use xpath to get all the nodes of interest in the Nokogiri object/document
       nodes = nokodoc.xpath('//ul[@class="product-listing product-grid row"]/div[@class="productCarouselItemContainer"]/div[@class="productCarouselItem js-product-carousel-item"]/div[@class="item js-product-card-item"]/a')
       # Iterate through all these nodes, parsing from them the required name and price fields.
@@ -40,10 +40,9 @@ class ShoppingListController < ApplicationController
     Item.where(_id: item_id).delete!
   end
 
-  def add_items(household_id)
-    # Add an item to a shopping list.
-    # Note that the item is obtained from params[:item] - this needs to be there, else it won't work
-    # After the insert, redirect back to home to display the new item, along with a new total
+  def add_items
+    @shoppinglist = ShoppingList.where(household_id: current_user.household.id)
+    @shoppinglist.
   end
 
   def create_shopping_list(household_id)
@@ -60,4 +59,5 @@ class ShoppingListController < ApplicationController
   def shopping_list_params
     params.require(:items).permit(:household_id, {:indexes=>[]}, items: [:name, :price])
   end
+end
 end

@@ -43,25 +43,30 @@
     <%# There's no shopping list. Create one: %>
     <%= link_to create_shopping_list_path(@current_user.household.id), class: "btn btn-primary", method: :post %>
   <% else %>
-    <%# There is a shopping list. Iterate through each and render them: %>
-    <div class="panel-group">
-      <div class="panel panel-default">
-        <div class="panel-header">
-          <h3> Shopping List </h3>
+    <%# There is a shopping list, but it doesn't have items. Just display the search items button: %>
+    <% if @list.items.nil? || @list.items.empty? %>
+
+    <%# There is a shopping list, and it has items. Iterate through each and render them: %>
+    <% else %>
+      <div class="panel-group">
+        <div class="panel panel-default">
+          <div class="panel-header">
+            <h3> Shopping List </h3>
+          </div>
+          <div class="panel-body">
+            <% @list.items.each do |item| %>
+              <%= render partial: "shopping_lists/item", object: item %>
+              <br>
+            <% end %>
+          </div>
         </div>
-        <div class="panel-body">
-          <% @list.items.each do |item| %>
-            <%= render partial: "shopping_lists/item", object: item %>
-            <br>
-          <% end %>
-        </div>
+          <div class="panel panel-footer">
+            <p> Total Items: <%= @list.items.count %> </p>
+            <p> Total Price: R<%= @list.items.map{ |item| item.price }.reduce(:+) %> </p>
+          </div>
       </div>
-      <div class="panel panel-footer">
-        <p> Total Items: <%= @list.items.count %> </p>
-        <p> Total Price: R<%= @list.items.map{ |item| item.price }.reduce(:+) %> </p>
-      </div>
-    </div>
-    <%= form_tag search_items_path, method: :get, :class => "form-inline" do %>
+    <% end %>
+    <%= form_tag search_item_path, method: :get, :class => "form-inline" do %>
       <%= text_field_tag :query, params[:query] %>
       <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
     <% end %>

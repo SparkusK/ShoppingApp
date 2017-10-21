@@ -148,9 +148,8 @@ class HouseholdsController < ApplicationController
     @household.user_id = current_user.id
     @household.joinable = true
     @shoppinglist = ShoppingList.create
-    @household.shopping_list_oid = @shoppinglist._id.str
     respond_to do |format|
-      if @household.save && @user.update_attributes(:household_id => @household.id)
+      if @household.save && @user.update_attributes(:household_id => @household.id) && @shoppinglist.update_attributes(household_id: @household.id)
         # If the user created a new household and became the head of that household,
         # we want to clear the database of applications to households from that particular user,
         # because if the head of one of the households decides to then accept the application from
