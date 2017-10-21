@@ -62,7 +62,7 @@ class HouseholdsController < ApplicationController
       # will inherit all of the old household's invitations and applications, which might be accepted, meaning that
       # a user completely unrelated to that household suddenly becomes part of it.
       house_id = @user.household.id
-      if (@user.update_attributes(household_id: nil) && Household.find_by(id: house_id).destroy! && Invitation.where(household_id: house_id).delete_all)
+      if (@user.update_attributes(household_id: nil) && Household.find_by(id: house_id).destroy! && Invitation.where(household_id: house_id).delete_all) && ShoppingList.find_by(household_id: house_id).delete!
         format.html {
           flash[:success] = "Household left and deleted, pending invitations and applications also destroyed."
           redirect_to root_url
@@ -147,7 +147,7 @@ class HouseholdsController < ApplicationController
     @household = Household.new(household_params)
     @household.user_id = current_user.id
     @household.joinable = true
-    @shoppinglist = ShoppingList.create
+    @shoppinglist = ShoppingList.create(items: [])
     respond_to do |format|
       if @household.save && @user.update_attributes(:household_id => @household.id) && @shoppinglist.update_attributes(household_id: @household.id)
         # If the user created a new household and became the head of that household,

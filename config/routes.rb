@@ -44,9 +44,10 @@ Rails.application.routes.draw do
 
   # -- Shopping Lists -- #
   get 'search_item/', to: 'shopping_list#search_item', as: :search_item
-  post 'delete_item/:household_id/:item_id', to: 'shopping_list#delete_item', as: :delete_item
-  post 'add_items/', to: 'shopping_lists#add_item', as: :add_items
-  get 'select_items/', to: 'shopping_list#select_items', as: :select_items
+  #post 'delete_item/:household_id/:item_id', to: 'shopping_list#delete_item', as: :delete_item
+  post 'add_items/', to: 'shopping_list#add_items', as: :add_items
+  post 'remove_items/', to: 'shopping_list#remove_items', as: :remove_items
+#  get 'select_items/', to: 'shopping_list#select_items', as: :select_items
 
   post 'create_shopping_list/:household_id', to: 'shopping_list#create_shopping_list', as: :create_shopping_list
 end

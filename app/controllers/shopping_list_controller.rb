@@ -11,20 +11,20 @@ class ShoppingListController < ApplicationController
       nodes = nokodoc.xpath('//ul[@class="product-listing product-grid row"]/div[@class="productCarouselItemContainer"]/div[@class="productCarouselItem js-product-carousel-item"]/div[@class="item js-product-card-item"]/a')
       # Iterate through all these nodes, parsing from them the required name and price fields.
       # This will create an array with name=>"", price=>x.y hashes ([{name: "", price: x.y}, {name: "", price: x.y},  etc])
-      items = nodes.map do |node|
+      @items = nodes.map { |node|
         rands_raw = node.children[5].children[1].children[1].children[0].content
         cents_raw = node.children[5].children[1].children[1].children[1].children[0].content
         name_raw = node.children[3].children[0].content
         Hash({
             name: name_raw,
             price: (rands_raw[rands_raw.index('R')+1..-1] + "." + cents_raw).to_f,
-            checked: false
+            img_url: node.children[1].children[1].attributes["src"].value
         })
-      end
-      if !items.empty?
-        params[:items] = items
-        flash[:success] = "Successfully found #{items.size} items with the query #{params[:query]}."
-        redirect_to select_items_path
+      }
+      if !@items.empty?
+        params[:items] = @items
+        flash[:success] = "Successfully found #{@items.size} items with the query #{params[:query]}."
+        render 'select_items', collection: @items
       else
         flash[:warning] = "Nothing went wrong, but the query didn't return any items. Please try again with a different query."
         redirect_to root_path
@@ -33,7 +33,6 @@ class ShoppingListController < ApplicationController
       flash[:error] = "No input query was found. Please try again with a valid search query."
       redirect_to root_path
     end
-
   end
 
   def delete_item(item_id)
@@ -41,8 +40,11 @@ class ShoppingListController < ApplicationController
   end
 
   def add_items
-    @shoppinglist = ShoppingList.where(household_id: current_user.household.id)
-    @shoppinglist.
+    @shoppinglist = ShoppingList.find_by(household_id: current_user.household.id)
+    items = params["items"].map{ |item| YAML.load(item) }
+    items.each {|item| @shoppinglist.add_item(item)}
+    flash[:success] = "Successfully added the items"
+    redirect_to root_path
   end
 
   def create_shopping_list(household_id)
@@ -50,14 +52,13 @@ class ShoppingListController < ApplicationController
   end
 
   def select_items
-    render 'shopping_lists/select_items.html'
+    render 'shopping_lists/select_items'
   end
 
   private
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def shopping_list_params
-    params.require(:items).permit(:household_id, {:indexes=>[]}, items: [:name, :price])
+    params.require({:items=>[]}).permit(:household_id, {:indexes=>[]})
   end
-end
 end

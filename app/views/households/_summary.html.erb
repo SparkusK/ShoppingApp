@@ -41,35 +41,80 @@
   <% @list = ShoppingList.find_by(household_id: @current_user.household.id) %>
   <% if @list.nil? %>
     <%# There's no shopping list. Create one: %>
+    <p> says shopping list is nil </p>
     <%= link_to create_shopping_list_path(@current_user.household.id), class: "btn btn-primary", method: :post %>
   <% else %>
     <%# There is a shopping list, but it doesn't have items. Just display the search items button: %>
     <% if @list.items.nil? || @list.items.empty? %>
-
+      <p> Says list is nil or empty </p>
     <%# There is a shopping list, and it has items. Iterate through each and render them: %>
     <% else %>
-      <div class="panel-group">
-        <div class="panel panel-default">
-          <div class="panel-header">
+      <div class="panel panel-default" style="margin-left: 15px; margin-right: 15px">
+        <div class="panel-header">
+          <div class="row">
+          <div class="col-md-4">
             <h3> Shopping List </h3>
           </div>
-          <div class="panel-body">
-            <% @list.items.each do |item| %>
-              <%= render partial: "shopping_lists/item", object: item %>
-              <br>
+          <div class="col-md-8">
+            <div class="row">
+              <p> Total Items: <%= @list.items.count %> </p>
+            </div>
+            <div class="row">
+              <p> Total Price: R<%= @list.items.map{ |item| item[:price].to_f }.reduce(:+) %> </p>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="panel-body">
+          <div class="panel-group">
+            <%= form_tag remove_items_path, method: :post do %>
+              <% @list.items.each_with_index do |item, index| %>
+                <div class="panel panel-default" style="margin-left: 15px; margin-right: 15px">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Item Number: <%= index %></h3>
+                  </div>
+                  <div class="panel-body">
+                    <div class="row">
+                      <div class="col-md-2">
+                        <img src=<%= item[:img_url] %> class="img-rounded" style="width: 100px; height: 100px">
+                      </div>
+                      <div class="col-md-9">
+                        <div class="row">
+                          <div class="col-md-9">
+                            Item Name: <%= item[:description] %>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-9">
+                            Item Price: R<%= item[:price] %>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-9">
+                            Item Capture Date: <%= item[:date_captured] %>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-1">
+                        <%= check_box_tag( 'items[]', item.to_yaml ) %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+              <% end %>
+            </div>
+          </div>
+          <div class="panel-footer">
+            <%= submit_tag "Remove Selected Items to Shopping List", name: nil, class: "btn btn-primary" %>
             <% end %>
           </div>
         </div>
-          <div class="panel panel-footer">
-            <p> Total Items: <%= @list.items.count %> </p>
-            <p> Total Price: R<%= @list.items.map{ |item| item.price }.reduce(:+) %> </p>
-          </div>
-      </div>
     <% end %>
-    <%= form_tag search_item_path, method: :get, :class => "form-inline" do %>
-      <%= text_field_tag :query, params[:query] %>
-      <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
-    <% end %>
+  <% end %>
+  <%= form_tag search_item_path, method: :get, :class => "form-inline" do %>
+    <%= text_field_tag :query, params[:query] %>
+    <%= submit_tag "Search", name: nil, class: "btn btn-primary" %>
   <% end %>
 
 
