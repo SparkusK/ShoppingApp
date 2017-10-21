@@ -1,0 +1,9 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    Name: <%= @item.name %>
+    Price: R<%= @item.price %>
+  </div>
+  <div class="panel-footer">
+    <%= link_to delete_item_path(@item._id), class: "btn btn-default", method: :post, confirm: {data: "Are you sure you want to remove this item?"} %>
+  </div>
+</div>

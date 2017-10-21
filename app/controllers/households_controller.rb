@@ -147,6 +147,8 @@ class HouseholdsController < ApplicationController
     @household = Household.new(household_params)
     @household.user_id = current_user.id
     @household.joinable = true
+    @shoppinglist = ShoppingList.create
+    @household.shopping_list_oid = @shoppinglist._id.str
     respond_to do |format|
       if @household.save && @user.update_attributes(:household_id => @household.id)
         # If the user created a new household and became the head of that household,

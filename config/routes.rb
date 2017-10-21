@@ -42,5 +42,10 @@ Rails.application.routes.draw do
   get 'search_members/:search_query', to: 'invitations#search_members', as: :search_members
   get 'search_households/:search_query', to: 'invitations#search_households', as: :search_households
 
+  # -- Shopping Lists -- #
+  get 'search_item/', to: 'shopping_lists#search_item', as: :search_item
+  post 'delete_item/:household_id/:item_id', to: 'shopping_lists#delete_item', as: :delete_item
+  post 'add_items/', to: 'shopping_lists#add_item', as: :add_items
 
+  post 'create_shopping_list/:household_id', to: 'shopping_lists#create_shopping_list', as: :create_shopping_list
 end

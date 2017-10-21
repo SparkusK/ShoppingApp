@@ -135,7 +135,7 @@ class InvitationsController < ApplicationController
   end
 
   # Accept a user's application into a household, by updating the user's household_id attribute and deleting that user's
-  # pending invitations and applications.
+  # pending invitations and   applications.
   def accept_application
     respond_to do |format|
       if User.find_by(id: params[:user_id]).update_attributes(household_id: params[:household_id]) &&

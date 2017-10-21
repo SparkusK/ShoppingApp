@@ -11,9 +11,6 @@
     <%= gravatar_for @head, size: 35 %>
     <%= @head.firstname + " " + @head.surname %>
   </div>
-  <div class="panel-footer">
-    <button type="button" class="btn">Do nothing!</button>
-  </div>
 </div>
 </br>
 
@@ -41,7 +38,36 @@
 
 <%# Shopping Lists: %>
 <h2> Shopping lists: </h2>
-<p> To be implemented. <p>
+  <% @list = ShoppingList.find_by(household_id: @current_user.household.id) %>
+  <% if @list.nil? %>
+    <%# There's no shopping list. Create one: %>
+    <%= link_to create_shopping_list_path(@current_user.household.id), class: "btn btn-primary", method: :post %>
+  <% else %>
+    <%# There is a shopping list. Iterate through each and render them: %>
+    <div class="panel-group">
+      <div class="panel panel-default">
+        <div class="panel-header">
+          <h3> Shopping List </h3>
+        </div>
+        <div class="panel-body">
+          <% @list.items.each do |item| %>
+            <%= render partial: "shopping_lists/item", object: item %>
+            <br>
+          <% end %>
+        </div>
+      </div>
+      <div class="panel panel-footer">
+        <p> Total Items: <%= @list.items.count %> </p>
+        <p> Total Price: R<%= @list.items.map{ |item| item.price }.reduce(:+) %> </p>
+      </div>
+    </div>
+    <%= form_tag search_items_path, method: :get, :class => "form-inline" do %>
+      <%= text_field_tag :query, params[:query] %>
+      <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
+    <% end %>
+  <% end %>
+
+
 
 <%# Head Admin stuff: %>
 <% if @current_user.id == @head.id %>
