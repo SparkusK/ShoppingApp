@@ -20,7 +20,9 @@ gem 'will_paginate',  '>=3.1.5'
 gem 'bootstrap-will_paginate', '>=1.0.0'
 gem 'carrierwave',    '>=1.1.0'
 gem 'mini_magick',    '>=4.7.0'
-#gem 'dashing-rails'
+
+gem 'redis-rails', '~> 5'
+gem 'dashing-rails'
 
 gem 'ruby-oci8'
 gem 'activerecord-oracle_enhanced-adapter', '~> 1.8.0'
