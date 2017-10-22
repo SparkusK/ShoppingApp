@@ -54,5 +54,4 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
-  ENV["REDISTOGO_URL"] = 'redis://redistogo:2282e16be92f42e6a025939a51227e4e@grouper.redistogo.com:10979/'
 end
