@@ -292,7 +292,6 @@ DEPENDENCIES
   rails (>= 5.1.4)
   rails-controller-testing (>= 0.1.1)
   rails_12factor
-  redis
   redis-rails (~> 5)
   ruby-oci8
   sass-rails (>= 5.0.6)
