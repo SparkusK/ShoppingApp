@@ -21,7 +21,9 @@ gem 'bootstrap-will_paginate', '>=1.0.0'
 gem 'carrierwave',    '>=1.1.0'
 gem 'mini_magick',    '>=4.7.0'
 
-
+gem 'redis'
+gem 'redis-rails', '~> 5'
+gem 'dashing-rails'
 
 gem 'ruby-oci8'
 gem 'activerecord-oracle_enhanced-adapter', '~> 1.8.0'
@@ -33,7 +35,7 @@ gem 'mongoid',        '~>6.1.0'
 group :development, :test do
   #gem 'sqlite3', '>=1.3.12'
   gem 'byebug',  '>=9.0.0', platform: :mri
-
+  #gem 'redis-rails'
 end
 
 group :development do
@@ -54,6 +56,7 @@ end
 group :production do
   #gem 'pg', '>=0.18.4'
   gem 'sendgrid-ruby'
+  gem 'rails_12factor'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
