@@ -20,21 +20,19 @@ gem 'will_paginate',  '>=3.1.5'
 gem 'bootstrap-will_paginate', '>=1.0.0'
 gem 'carrierwave',    '>=1.1.0'
 gem 'mini_magick',    '>=4.7.0'
-gem 'dashing-rails'
+#gem 'dashing-rails'
 
 gem 'ruby-oci8'
 gem 'activerecord-oracle_enhanced-adapter', '~> 1.8.0'
 
-# Fog is used (I think) for downloading/uploading images to a cloud solution (I used Google cloud services). No images yet,
-# so comment it out:
 # gem 'fog',            '>=1.40.0'
 
 gem 'mongoid',        '~>6.1.0'
 
 group :development, :test do
-  gem 'sqlite3', '>=1.3.12'
+  #gem 'sqlite3', '>=1.3.12'
   gem 'byebug',  '>=9.0.0', platform: :mri
-  gem 'redis-rails'
+  #gem 'redis-rails'
 end
 
 group :development do
@@ -53,7 +51,7 @@ group :test do
 end
 
 group :production do
-  gem 'pg', '>=0.18.4'
+  #gem 'pg', '>=0.18.4'
   gem 'sendgrid-ruby'
   gem 'rails_12factor'
 end
