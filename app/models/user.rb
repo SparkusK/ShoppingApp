@@ -20,12 +20,6 @@ class User < ApplicationRecord
   has_secure_password
 
 
-  # Wtaf?
-  # This is from the railstutorial site. I need to find the specific chapter->section where it's from,
-  # and put the link in these comments, so that we can understand what this is for.
-  #
-  # (won't really be necessary though)
-  # The important thing to understand is:
   # This function generates an encrypted string, usually used for storing password hashes, but
   # also used for similar tokens and such.
   def User.digest(string)
