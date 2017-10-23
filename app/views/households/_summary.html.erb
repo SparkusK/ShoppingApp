@@ -95,7 +95,7 @@
                           </div>
                         </div>
                         <% @user = User.find_by(id: item[:added_by]) %>
-                        <% if !@user.nil %>
+                        <% if !@user.nil? %>
                         <div class="row">
                           <div class="col-md-9">
                             Item Added By: <%= @user.firstname %>
