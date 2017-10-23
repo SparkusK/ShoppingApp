@@ -40,7 +40,7 @@ class InvitationsController < ApplicationController
         @households = Household.where("joinable = ?", true)
       end
     else
-      @households = User.joins("INNER JOIN households ON households.id = users.household_id").distinct.where("users.firstname LIKE ? OR users.surname LIKE ? AND households.joinable = ?",
+      @households = User.where("users.firstname LIKE ? OR users.surname LIKE ? AND households.joinable = ?",
         "%#{params[:search_query]}%",
         "%#{params[:search_query]}%",
         true).select("households.id")

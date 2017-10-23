@@ -41,12 +41,12 @@
   <% @list = ShoppingList.find_by(household_id: @current_user.household.id) %>
   <% if @list.nil? %>
     <%# There's no shopping list. Create one: %>
-    <p> says shopping list is nil </p>
+    <p> Your household doesn't have a list yet. Please create one: </p>
     <%= link_to create_shopping_list_path(@current_user.household.id), class: "btn btn-primary", method: :post %>
   <% else %>
     <%# There is a shopping list, but it doesn't have items. Just display the search items button: %>
     <% if @list.items.nil? || @list.items.empty? %>
-      <p> Says list is nil or empty </p>
+      <p> Your list doesn't have items. Start adding items via the search box below. </p>
     <%# There is a shopping list, and it has items. Iterate through each and render them: %>
     <% else %>
       <div class="panel panel-default" style="margin-left: 15px; margin-right: 15px">
@@ -60,7 +60,7 @@
               <p> Total Items: <%= @list.items.count %> </p>
             </div>
             <div class="row">
-              <p> Total Price: R<%= @list.items.map{ |item| item[:price].to_f }.reduce(:+) %> </p>
+              <p> Total Price: R<%= @list.items.map{ |item| item[:price].to_f }.reduce(:+).round(2) %> </p>
             </div>
           </div>
         </div>
