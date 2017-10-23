@@ -94,6 +94,11 @@
                             Item Capture Date: <%= item[:date_captured] %>
                           </div>
                         </div>
+                        <div class="row">
+                          <div class="col-md-9">
+                            Item Added By: <%= User.find_by(id: item[:added_by]).firstname %>
+                          </div>
+                        </div>
                       </div>
                       <div class="col-md-1">
                         <%= check_box_tag( 'items[]', item._id.to_yaml ) %>

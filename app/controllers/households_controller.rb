@@ -62,7 +62,7 @@ class HouseholdsController < ApplicationController
       # will inherit all of the old household's invitations and applications, which might be accepted, meaning that
       # a user completely unrelated to that household suddenly becomes part of it.
       house_id = @user.household.id
-      if (@user.update_attributes(household_id: nil) && Household.find_by(id: house_id).destroy! && Invitation.where(household_id: house_id).delete_all) && ShoppingList.find_by(household_id: house_id).delete!
+      if (@user.update_attributes(household_id: nil) && Household.find_by(id: house_id).destroy! && Invitation.where(household_id: house_id).delete_all) && ShoppingList.find_by(household_id: house_id).delete
         format.html {
           flash[:success] = "Household left and deleted, pending invitations and applications also destroyed."
           redirect_to root_url
@@ -163,6 +163,8 @@ class HouseholdsController < ApplicationController
         Invitation.where(user_id: @user.id, is_invitation: false).delete_all
         format.html {
           flash[:success] = "Household created, you became a member, and you got assigned as the head. All your previous household applications were also automatically rescinded."
+          Keen.publish(:household_events, {household_id: @household.id, head_id: @user.id, description: "household created" })
+          UpdateAnalyticsJob.perform_later({household_id: @household.id, head_id: @user.id, description: "household created" })
           redirect_to root_url
         }
         format.json { render :show, status: :created, location: @household }

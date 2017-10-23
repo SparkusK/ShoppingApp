@@ -9,5 +9,6 @@ class Item
   field :search_query, type: String
   field :search_url, type: String
   field :shop, type: String # Will probably change this
+  field :added_by, type: Integer
 
 end

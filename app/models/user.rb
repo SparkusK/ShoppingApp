@@ -20,12 +20,6 @@ class User < ApplicationRecord
   has_secure_password
 
 
-  # Wtaf?
-  # This is from the railstutorial site. I need to find the specific chapter->section where it's from,
-  # and put the link in these comments, so that we can understand what this is for.
-  #
-  # (won't really be necessary though)
-  # The important thing to understand is:
   # This function generates an encrypted string, usually used for storing password hashes, but
   # also used for similar tokens and such.
   def User.digest(string)
@@ -58,6 +52,8 @@ class User < ApplicationRecord
 
   def send_activation_email
       UserMailer.account_activation(self).deliver_now
+      Keen.publish :activation, {user_id: self.id, description: "mailed"}
+      UpdateAnalyticsJob.perform_later({user_id: self.id, description: "mailed"})
   end
 
   def create_reset_digest

@@ -50,4 +50,15 @@ Rails.application.routes.draw do
 #  get 'select_items/', to: 'shopping_list#select_items', as: :select_items
 
   post 'create_shopping_list/:household_id', to: 'shopping_list#create_shopping_list', as: :create_shopping_list
+
+  # -- Dashboard -- #
+  get 'dashboard/', to: 'dashboard#dashboard', as: :dashboard
+
+  # Routes for AJAX calls for JSON data:
+  get 'chart_total_items_price/', to: 'dashboard#get_total_items_price', as: :get_total_items_price
+  get 'chart_avg_items_price/', to: 'dashboard#get_avg_items_price', as: :get_avg_items_price
+  get 'chart_total_items/', to: 'dashboard#get_total_items', as: :get_total_items
+  get 'chart_user_amount/', to: 'dashboard#get_user_amount', as: :get_user_amount
+  get 'chart_top_ten_items/', to: 'dashboard#get_sorted_items_by_price', as: :get_sorted_items_by_price
+  get 'chart_get_grouped_items', to: 'dashboard#get_grouped_items', as: :get_grouped_items
 end
