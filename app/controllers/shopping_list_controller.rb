@@ -47,7 +47,7 @@ class ShoppingListController < ApplicationController
     @current_user = current_user
 
     @shoppinglist = ShoppingList.find_by(household_id: @current_user.household.id)
-    items = params["items"].map{ |item| output_item = YAML.load(item); output_item[:added_by] = @current_user.id; output_item  }
+    items = params["items"].map{ |item| output_item = YAML.load(item); output_item[:added_by] = @current_user.id; output_item }
     items.each {|item| @shoppinglist.add_item(item)}
     flash[:success] = "Successfully added the items"
     redirect_to root_path
@@ -55,6 +55,7 @@ class ShoppingListController < ApplicationController
 
   def create_shopping_list(household_id)
     ShoppingList.new(household_id: household_id, items: []).save!
+    redirect_back_or(root_url)
   end
 
   def select_items

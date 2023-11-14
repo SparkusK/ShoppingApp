@@ -6,3 +6,5 @@ development:
   clients:
     default:
       uri: mongodb://heroku_lpfnlhmc:nc0sfc63e0sfnvepkcl6nctdgq@ds035806.mlab.com:35806/heroku_lpfnlhmc
+  options:
+    raise_not_found_error: false

@@ -49,7 +49,7 @@ Rails.application.routes.draw do
   post 'remove_items/', to: 'shopping_list#remove_items', as: :remove_items
 #  get 'select_items/', to: 'shopping_list#select_items', as: :select_items
 
-  post 'create_shopping_list/:household_id', to: 'shopping_list#create_shopping_list', as: :create_shopping_list
+  get 'create_shopping_list/:household_id', to: 'shopping_list#create_shopping_list', as: :create_shopping_list
 
   # -- Dashboard -- #
   get 'dashboard/', to: 'dashboard#dashboard', as: :dashboard

@@ -42,7 +42,7 @@
   <% if @list.nil? %>
     <%# There's no shopping list. Create one: %>
     <p> Your household doesn't have a list yet. Please create one: </p>
-    <%= link_to create_shopping_list_path(@current_user.household.id), class: "btn btn-primary", method: :post %>
+    <%= link_to "Create Shopping List", create_shopping_list_path(@current_user.household.id), class: "btn btn-primary" %>
   <% else %>
     <%# There is a shopping list, but it doesn't have items. Just display the search items button: %>
     <% if @list.items.nil? || @list.items.empty? %>
